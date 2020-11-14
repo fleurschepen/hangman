@@ -50,13 +50,14 @@ hangman = ['''
       |
 =========''']
 
-word_to_guess = randomword()
+to_guess = randomword()
+word_to_guess = to_guess[0].lower()
 guess_mode = "letter"
 correctly_guessed_letters = []
 wrongly_guessed_letters = []
 wrongly_guessed_words = []
 guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
-guessed_word = ""
+guessedinput = ""
 
 
 def print_guess():
@@ -67,7 +68,6 @@ def print_guess():
             word += letter
         else:
             word += "_"
-
     guessed = []
     guessed.extend(wrongly_guessed_letters)
     guessed.extend(wrongly_guessed_words)
@@ -82,34 +82,35 @@ def print_guess():
     return print(f"\nGuessing: {word}\nGuessed: {guessed_str}\n")
 
 
-while word_to_guess != guessed_word and guesses < 6:
+while word_to_guess != guessedinput and guesses < 6:
     print(hangman[guesses])
     print_guess()
-    guessed = input("What is your guess? ").lower()
-    if len(guessed) > 1 :
-        if not guessed.isalpha():
+    guessedinput = input("What is your guess? ").lower()
+    if len(guessedinput) > 1:
+        print(guessedinput)
+        if not guessedinput.isalpha():
             print("\nThat's not a (normal?) word 😜")
-        elif guessed in wrongly_guessed_words:
-            print(f"\nYou already guessed '{guessed}'!")
-        elif guessed != word_to_guess:
-            wrongly_guessed_words.append(guessed)
-            print(f"\nUh oh! It wasn't '{guessed}', sad times 😢")
+        elif guessedinput in wrongly_guessed_words:
+            print(f"\nYou already guessed '{guessedinput}'!")
+        elif guessedinput != word_to_guess:
+            wrongly_guessed_words.append(guessedinput)
+            print(f"\nUh oh! It wasn't '{guessedinput}', sad times 😢")
     else:
-        if not guessed.isalpha():
+        if not guessedinput.isalpha():
             print("\nThat's not a letter 😜")
-        elif guessed in wrongly_guessed_letters or guessed in correctly_guessed_letters:
-            print(f"\nYou already guessed '{guessed}'!")
-        elif guessed in word_to_guess:
-            correctly_guessed_letters.append(guessed)
-            print(f"\nYes! It contains '{guessed}', well done 👏")
+        elif guessedinput in wrongly_guessed_letters or guessedinput in correctly_guessed_letters:
+            print(f"\nYou already guessed '{guessedinput}'!")
+        elif guessedinput in word_to_guess:
+            correctly_guessed_letters.append(guessedinput)
+            print(f"\nYes! It contains '{guessedinput}', well done 👏")
         else:
-            wrongly_guessed_letters.append(guessed)
-            print(f"\nUh oh! It doesn't contain '{guessed}', sad times 😢")
+            wrongly_guessed_letters.append(guessedinput)
+            print(f"\nUh oh! It doesn't contain '{guessedinput}', sad times 😢")
 
     guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
 
-if guessed == word_to_guess:
-    print(f"Yes! The word was '{guessed}'. You win!!! 🎉")
+if guessedinput == word_to_guess:
+    print(f"Yes! The word was '{guessedinput}'. You win!!! 🎉\n This means {to_guess[1]}")
 else:
     print(hangman[guesses])
-    print(f"RIP, you died!!! ☠️ the word was {word_to_guess}")
+    print(f"RIP, you died!!! ☠️ the word was {word_to_guess} which means {to_guess[1]}")
