@@ -60,10 +60,26 @@ guessed_word = ""
 
 
 def print_guess():
+    indexes_for_guessed_letters = []
+
+    while len(indexes_for_guessed_letters) < len(correctly_guessed_letters):
+        indexes_for_guessed_letters.append([])
+
+    for i, correctly_guessed_letter in enumerate(correctly_guessed_letters):
+        for j, letter in enumerate(word_to_guess):
+            if correctly_guessed_letter == letter:
+                indexes_for_guessed_letters[i].append(j)
+
     word = ""
 
-    for letter in word_to_guess:
-        if letter in correctly_guessed_letters:
+    for i, letter in enumerate(word_to_guess):
+        letter_guessed = False
+
+        for j, index in enumerate(indexes_for_guessed_letters):
+            if i in index:
+                letter_guessed = True
+
+        if letter_guessed:
             word += letter
         else:
             word += "_"
