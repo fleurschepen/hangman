@@ -56,7 +56,7 @@ correctly_guessed_letters = []
 wrongly_guessed_letters = []
 wrongly_guessed_words = []
 guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
-guessed_word = ""
+guessed = ""
 
 
 def print_game_state():
@@ -76,9 +76,15 @@ def print_game_state():
     return print(f"{hangman[guesses]}\n\nGuessing: {word}\nGuessed: {guessed_str}\n")
 
 
-while word_to_guess != guessed_word and guesses < 6:
+def check_guessed_letters():
+    global guessed
+    guessed = word_to_guess if all(letter in correctly_guessed_letters for letter in word_to_guess) else guessed
+
+
+while word_to_guess != guessed and guesses < 6:
     print_game_state()
     guessed = input("What is your guess? ").lower()
+
     if len(guessed) > 1 :
         if not guessed.isalpha():
             print("\nThat's not a (normal?) word 😜")
@@ -99,6 +105,7 @@ while word_to_guess != guessed_word and guesses < 6:
             wrongly_guessed_letters.append(guessed)
             print(f"\nUh oh! It doesn't contain '{guessed}', sad times 😢")
 
+    check_guessed_letters()
     guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
 
 if guessed == word_to_guess:
