@@ -51,7 +51,6 @@ hangman = ['''
 =========''']
 
 word_to_guess = randomword()
-guess_mode = "letter"
 correctly_guessed_letters = []
 wrongly_guessed_letters = []
 wrongly_guessed_words = []
@@ -81,11 +80,18 @@ def check_guessed_letters():
     guessed = word_to_guess if all(letter in correctly_guessed_letters for letter in word_to_guess) else guessed
 
 
+def one_letter_left_to_guess():
+    letters_to_guess = len(list(dict.fromkeys(word_to_guess))) - len(correctly_guessed_letters)
+    return letters_to_guess == 1
+
+
 while word_to_guess != guessed and guesses < 6:
     print_game_state()
-    guessed = input("What is your guess? ").lower()
+    guessed = input(
+        "What is your guess? " if not one_letter_left_to_guess() else "One letter left!!! What's the word? "
+    ).lower()
 
-    if len(guessed) > 1 :
+    if len(guessed) > 1:
         if not guessed.isalpha():
             print("\nThat's not a (normal?) word 😜")
         elif guessed in wrongly_guessed_words:
