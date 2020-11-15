@@ -59,32 +59,25 @@ guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
 guessed_word = ""
 
 
-def print_guess():
+def print_game_state():
     word = ""
 
     for letter in word_to_guess:
-        if letter in correctly_guessed_letters:
-            word += letter
-        else:
-            word += "_"
+        word += letter if letter in correctly_guessed_letters else "_"
 
-    guessed = []
-    guessed.extend(wrongly_guessed_letters)
-    guessed.extend(wrongly_guessed_words)
+    guessed_ext = []
+    guessed_ext.extend(wrongly_guessed_letters)
+    guessed_ext.extend(wrongly_guessed_words)
     guessed_str = ""
 
-    for i, wrong_guess in enumerate(guessed):
-        if i == 0:
-            guessed_str += wrong_guess
-        else:
-            guessed_str += ", " + wrong_guess
+    for i, wrong_guess in enumerate(guessed_ext):
+        guessed_str += wrong_guess if i == 0 else ", " + wrong_guess
 
-    return print(f"\nGuessing: {word}\nGuessed: {guessed_str}\n")
+    return print(f"{hangman[guesses]}\n\nGuessing: {word}\nGuessed: {guessed_str}\n")
 
 
 while word_to_guess != guessed_word and guesses < 6:
-    print(hangman[guesses])
-    print_guess()
+    print_game_state()
     guessed = input("What is your guess? ").lower()
     if len(guessed) > 1 :
         if not guessed.isalpha():
