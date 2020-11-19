@@ -101,15 +101,6 @@ while word_to_guess != guessedinput and guesses < 6:
     if one_letter_left_to_guess():
         input_string += "You only have one letter left!!! "
 
-    # if guesses == 5 and one_letter_left_to_guess():
-    #     input_string = "Last guess and one letter left!!!"
-    # elif guesses == 5:
-    #     input_string = "Last guess!!!"
-    # elif not one_letter_left_to_guess():
-    #     input_string = "What is your guess?"
-    # else:
-    #     input_string = "One letter left!!! What is your guess? "
-
     guessedinput = input(input_string).lower()
 
     if len(guessedinput) > 1 :
