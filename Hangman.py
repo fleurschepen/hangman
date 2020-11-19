@@ -50,12 +50,15 @@ hangman = ['''
       |
 =========''']
 
-word_to_guess = randomword()
+to_guess = randomword()
+word_to_guess = to_guess[0].lower()
+print(word_to_guess)
+
 correctly_guessed_letters = []
 wrongly_guessed_letters = []
 wrongly_guessed_words = []
 guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
-guessed = ""
+guessedinput = ""
 
 
 def print_game_state():
@@ -76,8 +79,8 @@ def print_game_state():
 
 
 def check_guessed_letters():
-    global guessed
-    guessed = word_to_guess if all(letter in correctly_guessed_letters for letter in word_to_guess) else guessed
+    global guessedinput
+    guessedinput = word_to_guess if all(letter in correctly_guessed_letters for letter in word_to_guess) else guessedinput
 
 
 def one_letter_left_to_guess():
@@ -85,37 +88,55 @@ def one_letter_left_to_guess():
     return letters_to_guess == 1
 
 
-while word_to_guess != guessed and guesses < 6:
+while word_to_guess != guessedinput and guesses < 6:
     print_game_state()
-    guessed = input(
-        "What is your guess? " if not one_letter_left_to_guess() else "One letter left!!! What's the word? "
-    ).lower()
 
-    if len(guessed) > 1:
-        if not guessed.isalpha():
-            print("\nThat's not a (normal?) word 😜")
-        elif guessed in wrongly_guessed_words:
-            print(f"\nYou already guessed '{guessed}'!")
-        elif guessed != word_to_guess:
-            wrongly_guessed_words.append(guessed)
-            print(f"\nUh oh! It wasn't '{guessed}', sad times 😢")
+    input_string = ""
+
+    if guesses == 5:
+        input_string = "Last guess!!! "
     else:
-        if not guessed.isalpha():
+        input_string = "What is your guess? "
+
+    if one_letter_left_to_guess():
+        input_string += "You only have one letter left!!! "
+
+    # if guesses == 5 and one_letter_left_to_guess():
+    #     input_string = "Last guess and one letter left!!!"
+    # elif guesses == 5:
+    #     input_string = "Last guess!!!"
+    # elif not one_letter_left_to_guess():
+    #     input_string = "What is your guess?"
+    # else:
+    #     input_string = "One letter left!!! What is your guess? "
+
+    guessedinput = input(input_string).lower()
+
+    if len(guessedinput) > 1 :
+        if not guessedinput.isalpha():
+            print("\nThat's not a (normal?) word 😜")
+        elif guessedinput in wrongly_guessed_words:
+            print(f"\nYou already guessed '{guessedinput}'!")
+        elif guessedinput != word_to_guess:
+            wrongly_guessed_words.append(guessedinput)
+            print(f"\nUh oh! It wasn't '{guessedinput}', sad times 😢")
+    else:
+        if not guessedinput.isalpha():
             print("\nThat's not a letter 😜")
-        elif guessed in wrongly_guessed_letters or guessed in correctly_guessed_letters:
-            print(f"\nYou already guessed '{guessed}'!")
-        elif guessed in word_to_guess:
-            correctly_guessed_letters.append(guessed)
-            print(f"\nYes! It contains '{guessed}', well done 👏")
+        elif guessedinput in wrongly_guessed_letters or guessedinput in correctly_guessed_letters:
+            print(f"\nYou already guessed '{guessedinput}'!")
+        elif guessedinput in word_to_guess:
+            correctly_guessed_letters.append(guessedinput)
+            print(f"\nYes! It contains '{guessedinput}', well done 👏")
         else:
-            wrongly_guessed_letters.append(guessed)
-            print(f"\nUh oh! It doesn't contain '{guessed}', sad times 😢")
+            wrongly_guessed_letters.append(guessedinput)
+            print(f"\nUh oh! It doesn't contain '{guessedinput}', sad times 😢")
 
     check_guessed_letters()
     guesses = len(wrongly_guessed_letters) + len(wrongly_guessed_words)
 
-if guessed == word_to_guess:
-    print(f"Yes! The word was '{guessed}'. You win!!! 🎉")
+if guessedinput == word_to_guess:
+    print(f"Yes! The word was '{guessedinput}'. You win!!! 🎉\n This means {to_guess[1]}")
 else:
     print(hangman[guesses])
-    print(f"RIP, you died!!! ☠️ the word was {word_to_guess}")
+    print(f"RIP, you died!!! ☠️ The word was {word_to_guess} which means {to_guess[1]}")
